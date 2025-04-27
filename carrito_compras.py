@@ -32,4 +32,32 @@ def mostrar_menu() -> None:
 def limpiar_consola() -> None :
     os.system(os.system("cls" if os.name == "nt" else "clear"))
     
-print(mostrar_menu())
+    
+#Muestra todos los productos disponibles en el catálogo
+def mostrar_catalogo() -> None: 
+    print("\n📋 Catálogo de Productos:")
+    for codigo , producto in CATALOGO.items():
+        print(f"Codigo: {codigo} | Producto : {producto['nombre']} | Precio : S/{producto['precio']}")
+    print()
+
+#Agrega un producto al carrito de compras
+def agregar_prod_carrito(carrito : Carrito) -> None :
+    mostrar_catalogo()
+    codigo=input("Ingrese el Codigo de producto a agregar: ").strip().upper()
+    
+    if codigo not in CATALOGO:
+        print("Error: El codigo no existe en el catalogo,")
+        return
+    try:
+        cantidad=int(input("Inserte la cantidad agregar del producto: "))
+        if cantidad >=0:
+            carrito[codigo]=carrito.get(codigo,0)+cantidad
+            print(f"Producto {CATALOGO[codigo]["nombre"]} agregado al carrito")
+        else:
+            print("Error: La cantidad debe ser mayor a cero.")
+            return
+    except ValueError:
+        print("Error : Ingrese un numero valido")
+        
+carrito: Carrito = {}
+agregar_prod_carrito(carrito)
