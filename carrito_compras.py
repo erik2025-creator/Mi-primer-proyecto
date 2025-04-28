@@ -1,5 +1,6 @@
 from typing import Dict, List, Tuple
 import os
+from datetime import datetime
 
 Carrito=Dict[str , int]
 Producto = Dict[str, str | float ]
@@ -110,12 +111,56 @@ def eliminar_prod_carrito(carrito : Carrito)-> None:
         print(f" Producto : {CATALOGO[codigo]["nombre"]} eliminado del carrito")
     else :
         carrito[codigo] -= cantidad 
-        print(f" Se eliminaron del carrito (x{cantidad}) cantidad(es) del producto:{CATALOGO[codigo]["nombre"]} ")
+        print(f" Se eliminaron del carrito (x{cantidad}) cantidad(es) del producto: {CATALOGO[codigo]["nombre"]} ")
     
+ #Finaliza la compra
+def finalizar_compra(carrito : Carrito ) -> None :
+    if not carrito:
+        print("No se pudo procesar, el carrito se encuenta vacio")
+        return
+    mostrar_carrito(carrito)
+    print("\nResumen de tu compra: ")
     
+    total=0
+    productos_comprados =[]
+    
+    for codigo , cantidad in carrito.items() :
+        producto= CATALOGO[codigo]
+        total_producto= producto["precio"]*cantidad
+        total += total_producto
+        productos_comprados.append(f"{producto["nombre"]} (x{cantidad}) - S/{total_producto:.2f}")
+        print(f"- {producto["nombre"]} (x{cantidad}) - S/{total_producto:.2f}")
+    print(f"\nTotal a pagar: S/{total:.2f}")
+    print("Procesando pago...")
+    print("Pago realizado con éxito. ¡Gracias por tu compra! ")
+    
+    #Reto Guardar en un .txt 
+    registrar_compra(productos_comprados,total)
+    
+    #Limpiar el carrito
+    #vaciar_carrito(carrito)
+    carrito.clear()
+
+#Registra la compra en un archivo .txt
+def registrar_compra(productos_comprados : List[str],total : float) -> None:
+    try:
+        with open("historial_compras.txt" , "a" , encoding= "utf-8") as archivo :
+            fecha=datetime.now().strftime("%Y/%m/%d, %H:%M:%S")
+            archivo.write(f"\n Resumen de Compra del {fecha}\n")
+            archivo.write("------------------\n")
+            for producto in productos_comprados:
+                archivo.write(f"✔ {producto}\n")
+            archivo.write(f"Total pagado: S/{total:.2f}\n")
+    except Exception as error:
+        print(f"No se pudo registrar el Historial : {error}")
+    
+      
+      
 carrito: Carrito = {}
-agregar_prod_carrito(carrito)
 agregar_prod_carrito(carrito)
 mostrar_carrito(carrito)
 eliminar_prod_carrito(carrito)
 mostrar_carrito(carrito)
+finalizar_compra(carrito)
+agregar_prod_carrito(carrito)
+finalizar_compra(carrito)
