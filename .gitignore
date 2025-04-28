@@ -1,0 +1,16 @@
+# Ignorar __pycache__ y archivos compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar archivos de entorno y configuración local
+.env
+venv/
+
+# Ignorar archivos de IDE (opcional)
+.idea/
+.vscode/
+
+# Ignorar archivos de sistema (Windows)
+Thumbs.db

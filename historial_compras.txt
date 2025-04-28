@@ -19,3 +19,8 @@ Total pagado: S/22.50
 ✔ Pan (x5) - S/7.50
 ✔ Leche (x2) - S/7.60
 Total pagado: S/15.10
+
+ Resumen de Compra del 2025/04/27, 22:40:57
+------------------
+✔ Pan (x2) - S/3.00
+Total pagado: S/3.00
