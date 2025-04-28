@@ -1,21 +1,10 @@
 from typing import Dict, List, Tuple
 import os
 from datetime import datetime
+from Catalogo import CATALOGO, Producto
 
 Carrito=Dict[str , int]
-Producto = Dict[str, str | float ]
-Catalogo = Dict[ str , Producto]
 
-#Catalog inicial de productos 
-
-CATALOGO : Catalogo = {
-    "A001": {"nombre": "Pan", "precio": 1.50},
-    "B203": {"nombre": "Leche", "precio": 3.80},
-    "C456": {"nombre": "Huevos (docena)", "precio": 6.20},
-    "D789": {"nombre": "Arroz (1kg)", "precio": 4.50},
-    "E012": {"nombre": "Aceite (1L)", "precio": 8.30},
-    "F345": {"nombre": "Azúcar (1kg)", "precio": 3.20},
-}
 
 def mostrar_menu() -> None:
     """Muestra el menú de opciones"""
@@ -28,11 +17,7 @@ def mostrar_menu() -> None:
     print("5. Mostrar carrito")
     print("6. Finalizar compra")
     print("7. Salir")
-
-#Limpia la consola
-def limpiar_consola() -> None :
-    os.system(os.system("cls" if os.name == "nt" else "clear"))
-    
+   
     
 #Muestra todos los productos disponibles en el catálogo
 def mostrar_catalogo() -> None: 
@@ -72,7 +57,7 @@ def mostrar_carrito(carrito : Carrito) -> None:
     for codigo, cantidad in carrito.items():
         total_producto= CATALOGO[codigo]["precio"]*cantidad
         total += total_producto
-        print(f" Producto : {CATALOGO[codigo]["nombre"]} (x{cantidad}) -> S/{total_producto:.2f}")
+        print(f" Codigo: {codigo} |Producto : {CATALOGO[codigo]["nombre"]} (x{cantidad}) -> S/{total_producto:.2f}")
     print()    
     print(f"Tu total a pagar : S/{total:.2f}")
 
@@ -86,13 +71,13 @@ def vaciar_carrito(carrito : Carrito) -> None:
 #Quita un producto al carrito de compras
 def eliminar_prod_carrito(carrito : Carrito)-> None:
     if not carrito:
-        mostrar_carrito()
+        mostrar_carrito(carrito)
         return
     mostrar_carrito(carrito)
     codigo=input("Introduce el Codigo del Producto a Eliminar : ").strip().upper()
     
     if codigo not in carrito:
-        print("El codigo : {codigo} introducido no se encuentra en el carrito")
+        print(f"El codigo : {codigo} introducido no se encuentra en el carrito")
         return
     try:
         cantidad= int(input(f"Cantidad a eliminar (actualmente : {carrito[codigo]}): "))
@@ -100,7 +85,7 @@ def eliminar_prod_carrito(carrito : Carrito)-> None:
             print("La cantidad debe ser mayor a cero ")
             return
         if cantidad > carrito[codigo]:
-            print("Error La cantidad debe ser menor o igual a la que tienes ")
+            print("Error La cantidad debe ser menor o igual a la que tienes en el carrito")
             return
     except ValueError:
         print("Error Debes Ingresar un numero para la cantidad a eliminar ")
@@ -156,11 +141,3 @@ def registrar_compra(productos_comprados : List[str],total : float) -> None:
     
       
       
-carrito: Carrito = {}
-agregar_prod_carrito(carrito)
-mostrar_carrito(carrito)
-eliminar_prod_carrito(carrito)
-mostrar_carrito(carrito)
-finalizar_compra(carrito)
-agregar_prod_carrito(carrito)
-finalizar_compra(carrito)
