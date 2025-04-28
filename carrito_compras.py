@@ -52,12 +52,70 @@ def agregar_prod_carrito(carrito : Carrito) -> None :
         cantidad=int(input("Inserte la cantidad agregar del producto: "))
         if cantidad >=0:
             carrito[codigo]=carrito.get(codigo,0)+cantidad
-            print(f"Producto {CATALOGO[codigo]["nombre"]} agregado al carrito")
+            print(f"Producto {CATALOGO[codigo]["nombre"]} (x{carrito[codigo]}) agregado al carrito")
         else:
             print("Error: La cantidad debe ser mayor a cero.")
             return
     except ValueError:
         print("Error : Ingrese un numero valido")
         
+#Mostrar el contenido del carrito de compras
+def mostrar_carrito(carrito : Carrito) -> None:
+    if not carrito:
+        print("Tu carrito se encuentra vacio")
+        return
+        
+    print(f"\nContenido de mi carrito: \n")
+    total =0.0
+    
+    for codigo, cantidad in carrito.items():
+        total_producto= CATALOGO[codigo]["precio"]*cantidad
+        total += total_producto
+        print(f" Producto : {CATALOGO[codigo]["nombre"]} (x{cantidad}) -> S/{total_producto:.2f}")
+    print()    
+    print(f"Tu total a pagar : S/{total:.2f}")
+
+def vaciar_carrito(carrito : Carrito) -> None:
+    if not carrito:
+        print("Tu carrito se encuentra vacio")
+        return
+    carrito.clear()
+    print("El contenido de tu carrito fue eliminado exitosamente.")
+    
+#Quita un producto al carrito de compras
+def eliminar_prod_carrito(carrito : Carrito)-> None:
+    if not carrito:
+        mostrar_carrito()
+        return
+    mostrar_carrito(carrito)
+    codigo=input("Introduce el Codigo del Producto a Eliminar : ").strip().upper()
+    
+    if codigo not in carrito:
+        print("El codigo : {codigo} introducido no se encuentra en el carrito")
+        return
+    try:
+        cantidad= int(input(f"Cantidad a eliminar (actualmente : {carrito[codigo]}): "))
+        if cantidad <=0 :
+            print("La cantidad debe ser mayor a cero ")
+            return
+        if cantidad > carrito[codigo]:
+            print("Error La cantidad debe ser menor o igual a la que tienes ")
+            return
+    except ValueError:
+        print("Error Debes Ingresar un numero para la cantidad a eliminar ")
+        return
+    #Actualiza al carrito de compras
+    if cantidad==carrito[codigo]:
+        del carrito[codigo]
+        print(f" Producto : {CATALOGO[codigo]["nombre"]} eliminado del carrito")
+    else :
+        carrito[codigo] -= cantidad 
+        print(f" Se eliminaron del carrito (x{cantidad}) cantidad(es) del producto:{CATALOGO[codigo]["nombre"]} ")
+    
+    
 carrito: Carrito = {}
 agregar_prod_carrito(carrito)
+agregar_prod_carrito(carrito)
+mostrar_carrito(carrito)
+eliminar_prod_carrito(carrito)
+mostrar_carrito(carrito)
